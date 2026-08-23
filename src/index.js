@@ -48,15 +48,6 @@ async function startBot() {
     }
   });
 
-  // sock.ev.on("messages.upsert", async ({ messages }) => {
-  //   const message = messages[0];
-
-  //   if (!message.message) return;
-  //   if (message.key.fromMe) return;
-
-  //   console.log("📩 New message:", message.message);
-  // });
-
   sock.ev.on("messages.upsert", async ({ messages }) => {
   const message = messages[0];
 
@@ -73,34 +64,37 @@ async function startBot() {
   console.log(`📩 ${jid}: ${text}`);
 
   //commands 
-  if (text === ".info") {
-    await sock.sendMessage(jid, {
-      text: `Hi I'm bootleg tobi :), a bot made by Afolabi Tobi. I am your personal class assistant. I notify you about classes, send you your schedule and also send you documents. I am still in development so expect some bugs. Do not worry the bugs will be fixed in due time.`
-    });
-  }
-  
-  if (text === ".ping") {
-    await sock.sendMessage(jid, {
-      text: `Pong,  Bootleg tobi is online and ready to assist!`
-    })
-  }
+    if (text === ".info") {
+      //Mark message as read
+      const key: WAMessageKey
+      await sock.readMessages([key])
 
-  if (text === ".help") {
-    await sock.sendMessage(jid, {
-      text: `🤖 Available commands:
+      //Send message
+      await sock.sendMessage(jid, {
+        text: `Hi I'm bootleg tobi :), a bot made by Afolabi Tobi. I am your personal class assistant. I notify you about classes, send you your schedule and also send you documents. I am still in development so expect some bugs. Do not worry the bugs will be fixed in due time.`
+      });
+    }
+    
+    if (text === ".ping") {
+      await sock.sendMessage(jid, {
+        text: `Pong,  Yes I'm here!🤖`
+      })
+    }
 
-    .ping - Check if the bot is alive and active
-    .info- Display information about this bot
-    .help - Show this menu
-    .nextclass - Display your next class
-    .schedule - Display Your Schedule
-    .send <document name> - Send a specific document from the bot's storage
-      `
-    });
-  }
-});
+    if (text === ".help") {
+      await sock.sendMessage(jid, {
+        text: `🤖 Available commands:
 
+      .ping - Check if the bot is alive and active
+      .info- Display information about this bot
+      .help - Show this menu
+      .nextclass - Display your next class
+      .schedule - Display Your Schedule
+      .send <document name> - Send a specific document from the bot's storage
+        `
+      });
+    }
+  });
 }
-
 
 startBot();
