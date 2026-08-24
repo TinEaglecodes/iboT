@@ -61,27 +61,31 @@ async function startBot() {
 
   const jid = message.key.remoteJid;
 
+  await sock.sendPresenceUpdate('available', jid)
   console.log(`📩 ${jid}: ${text}`);
 
   //commands 
     if (text === ".info") {
-      //Mark message as read
-      const key: WAMessageKey
-      await sock.readMessages([key])
-
+      //typing state
+      await sock.sendPresenceUpdate('composing', jid)
       //Send message
       await sock.sendMessage(jid, {
+        
         text: `Hi I'm bootleg tobi :), a bot made by Afolabi Tobi. I am your personal class assistant. I notify you about classes, send you your schedule and also send you documents. I am still in development so expect some bugs. Do not worry the bugs will be fixed in due time.`
       });
     }
     
     if (text === ".ping") {
+      //typing state
+      await sock.sendPresenceUpdate('composing', jid)
       await sock.sendMessage(jid, {
         text: `Pong,  Yes I'm here!🤖`
       })
     }
 
     if (text === ".help") {
+      //typing state
+      await sock.sendPresenceUpdate('composing', jid)
       await sock.sendMessage(jid, {
         text: `🤖 Available commands:
 
