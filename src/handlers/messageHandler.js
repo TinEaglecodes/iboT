@@ -1,7 +1,7 @@
 import infoCommand from "../commands/info.js";
 import pingCommand from "../commands/ping.js";
 import helpCommand from "../commands/help.js";   
-import timetableCommand from "../commands/timetable/timetable.js";
+import timetableCommand from "../commands/timetable/schedulejs";
 
 export default async function handleMessage(sock, message){
     const text = message.message.conversation || message.message.extendedTextMessage?.text || "";
