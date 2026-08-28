@@ -17,22 +17,24 @@ export default async function handleMessage(sock, message){
     console.log(`📩 ${jid}: ${text}`);
 
 
-    if(text===".info"){
-        await infoCommand(sock, jid)
+    if(text===".info" || text===". info"){
+        await infoCommand(sock, jid, message)
     }
-    if(text===".ping"){
-        await pingCommand(sock, jid)
+    if(text===".ping" || text===". ping"){
+        await pingCommand(sock, jid, message)
     }
-    if(text===".help"){
-        await helpCommand(sock, jid)
+    if(text===".help" || text===". help"){
+        await helpCommand(sock, jid, message)
     }
-    if(text===".schedule"){
-        await timetableCommand(sock, jid)
+    if(text===".schedule"|| text===". schedule"){
+        await timetableCommand(sock, jid, message)
     }
     else{
-        await sock.sendMessage(jid, {
-            text: `🤖ERROR, that's not part of my commands, try these instead:`
-        })
+        //**edge case, replies to non-commands with guide
+        await sock.sendMessage(jid,
+            {text: `🤖ERROR, that's not part of my commands, try these instead:`},
+            {quoted: message}
+        )
         await helpCommand(sock, jid)
     }
 }

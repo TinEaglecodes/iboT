@@ -1,15 +1,19 @@
-export default async function helpCommand(sock, jid) {
+export default async function helpCommand(sock, jid, message) {
+
     //typing state
     await sock.sendPresenceUpdate('composing', jid)
+
     // send message
     await sock.sendMessage(jid, {
-      text: `🤖Command Me:
-.ping - Check if the bot is alive.
-.info- Display information about this bot.
-.help - Show this menu.
-.nextclass - Display your next class.
-.schedule - Display Your Schedule.
-.send <document name> - Send a specific document from the bot's storage.
-    `
-  });
+      text: `🤖 *iboT — Command Me*
+
+🏓 *.ping* - Check if I’m alive and kicking.
+🤖 *.info* - Find out more about me.
+📖 *.help* - Show this command menu.
+📚 *.nextclass* - See your next class.
+🗓️ *.schedule* - View your class timetable.
+📄 *.send <document name>* - Request a specific document from my storage.
+    `},
+    {quoted: message}
+  );
 }
