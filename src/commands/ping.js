@@ -6,7 +6,7 @@ export default async function pingCommand(sock, jid, message) {
     
     //send message
     await sock.sendMessage(jid,
-      {text: "Pong! Yes, I'm here! 🏓"},
+      {text: "Pong🏓! Yes, I'm here!"},
       {quoted: message}
     )
 }

@@ -3,15 +3,15 @@ export default async function infoCommand(sock, jid, message) {
     await sock.sendPresenceUpdate('composing', jid)
     //Send message
     await sock.sendMessage(jid, 
-      {text: `*Yo! I’m iboT* by *Afolabi Tobi*.
+      {text: `*Hi! I’m iboT* by *Afolabi Oluwatobi*. I'm your school assistant. I don't do anything crazy 
 I can help you with:
-📚 Keep you updated about your classes
-🗓️ Send you your class schedule
-📄 Help you find and receive course pdfs
+📚 Keep you updated about your classes.
+🗓️ Send you your class schedule. 
+📄 Help you find your course pdfs (that you sent to me)
 
 I’m still under development 🛠️, so you might run into a few bugs.
 
-But don’t worry tobi is getting smarter and better with every update so he'll probably fix me. 🚀
+But don’t worry tobi is hopefully getting smarter and better with every update so he'll probably fix the bugs.
 `},
       {quoted: message}
     );

@@ -6,7 +6,10 @@ import makeWASocket, {
 import qrcode from "qrcode-terminal";
 import P from "pino";
 import handleMessage from "./handlers/messageHandler.js";
+import { startReminderService } from "./commands/reminder/reminderService.js";
 
+
+let reminderStarted= false 
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState("./auth_info");
@@ -31,6 +34,12 @@ async function startBot() {
     //connection message
     if (connection === "open") {
       console.log("---✅ Bootleg tobi is connected!---");
+      if (!reminderStarted){
+        
+        startReminderService(sock);
+
+        reminderStarted = true;
+      }
     }
 
     if (connection === "close") {
