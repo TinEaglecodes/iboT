@@ -1,18 +1,18 @@
 import schedule from "../timetable/listofClass.js";
-import { getReminderStatus } from "./reminderSettings.js";
+import {getReminderStatus, getAllReminderUsers} from "./reminderSettings.js";
 
-const REMINDER_TIMES = [
+const reminderTimes = [
     {
-        minutes: 90,
-        label: "1 hour 30 minutes"
+        minutes: 60,
+        label: "in 1 hour"
     },
     {
         minutes: 30,
-        label: "30 minutes"
+        label: "in 30 minutes"
     },
     {
         minutes: 15,
-        label: "15 minutes"
+        label: "in 15 minutes"
     },
     {
         minutes: 0,
@@ -22,10 +22,7 @@ const REMINDER_TIMES = [
 
 // Users who should receive reminders
 //Add numbers here for test
-const REMINDER_USERS = [
-    "2349069068239@s.whatsapp.net",
-    "2347017106758@s.whatsapp.net",
-];
+
 
 // Prevent duplicate reminders
 const sentReminders = new Set();
@@ -101,14 +98,14 @@ function checkClass(sock, classInfo, now) {
 
     const differenceMinutes = differenceMs / 60000;
 
-    console.log(
-        `📚 ${classInfo.course} starts in ${differenceMinutes.toFixed(2)} minutes`
-    );
+    //test to echeck if the difference in minutes is being calculated correctly
+    // console.log(
+    //     `📚 ${classInfo.course} starts in ${differenceMinutes.toFixed(2)} minutes`
+    // );
 
-    for (const reminder of REMINDER_TIMES) {
-
+    for (const reminder of reminderTimes) {
+        
         const reminderTime = reminder.minutes;
-
         /*
          * Instead of checking:
          *
@@ -117,7 +114,6 @@ function checkClass(sock, classInfo, now) {
          * we check whether we're inside the
          * 1-minute window around the reminder.
          */
-
         if (
             differenceMinutes <= reminderTime &&
             differenceMinutes > reminderTime - 1
@@ -132,7 +128,6 @@ function checkClass(sock, classInfo, now) {
     }
 }
 
-
 async function sendReminder(sock, classInfo, reminder) {
 
     const today = new Date().toLocaleDateString("en-CA");
@@ -140,31 +135,38 @@ async function sendReminder(sock, classInfo, reminder) {
     const reminderKey =
         `${today}-${classInfo.course}-${reminder.minutes}`;
 
-    // Don't send the same reminder twice
+    // Prevent duplicate reminders
     if (sentReminders.has(reminderKey)) {
         return;
     }
 
-    sentReminders.add(reminderKey);
 
-    const message =
-`🔔 *CLASS REMINDER*
+    const users = getAllReminderUsers();
 
-*${classInfo.course}*
+    if (users.length === 0) {
+        console.log("📭 No users registered for reminders.");
+        return;
+    }
 
-⏰ Your class starts in *${reminder.label}*.
+    const message =`
+Your *${classInfo.course}* class
+
+⏰starts *${reminder.label}*.
 
 🕐 ${classInfo.time}
 📍 ${classInfo.venue}
 `;
 
-    for (const jid of REMINDER_USERS) {
 
-        // Check whether this user has reminders enabled
+    for (const jid of users) {
         const enabled = getReminderStatus(jid);
 
         if (!enabled) {
-            console.log(`🔕 Reminders OFF for ${jid}`);
+
+            console.log(
+                `🔕 Reminders OFF for ${jid}`
+            );
+
             continue;
         }
 
@@ -186,4 +188,6 @@ async function sendReminder(sock, classInfo, reminder) {
             );
         }
     }
+    // Mark reminder as processed
+    sentReminders.add(reminderKey);
 }

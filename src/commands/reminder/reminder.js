@@ -89,7 +89,6 @@ Status: ${enabled ? "🟢 ON" : "🔴 OFF"}
         return;
     }
 
-
     // INVALID COMMAND
 
     //typing state

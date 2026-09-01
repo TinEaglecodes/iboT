@@ -1,6 +1,11 @@
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const FILE = "./reminderSettings.json";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const FILE = path.join(__dirname, "reminderSettings.json");
 
 function loadSettings() {
     try {
@@ -20,26 +25,34 @@ function saveSettings(settings) {
 }
 
 
+// Turn reminders ON/OFF for a user
 export function setReminderStatus(jid, enabled) {
 
     const settings = loadSettings();
 
     settings[jid] = {
-        enabled
+        enabled: enabled
     };
-
     saveSettings(settings);
 }
 
 
+// Check whether a user's reminders are enabled
 export function getReminderStatus(jid) {
 
     const settings = loadSettings();
 
-    // Default = ON
+    // New users are ON by default
     if (!settings[jid]) {
         return true;
     }
-
     return settings[jid].enabled;
+}
+
+// Get every user who has a reminder setting
+export function getAllReminderUsers() {
+
+    const settings = loadSettings();
+
+    return Object.keys(settings);
 }

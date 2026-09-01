@@ -1,6 +1,7 @@
 const schedule = {
     //an empty object signifies a free day
     //startHour: the time a class is meant to start
+    //startMinute: the minute a class is meant to start
     "monday": [
         { course: "SEN 202", time: "08:00 AM - 10:00 AM", venue: "SOC LT II", startHour: 8, startMinute: 0},
         { course: "CSC 202", time: "02:00 PM - 04:00 PM", venue: "FBN", startHour: 14, startMinute: 0},

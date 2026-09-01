@@ -18,9 +18,11 @@ export default async function timetableCommand(sock, jid,message){
             {quoted: message}
         )
     }
-    let scheduleText = `📅 *Classes Today (${todayName.toUpperCase()}):* \n\n`;
+    let scheduleText = `*Classes Today (${todayName.toUpperCase()}):* \n\n`;
             todayClass.forEach(c => {
-                scheduleText += `📖 *${c.course}*\n🕒 Time: ${c.time}\n🏢 Venue: ${c.venue}\n\n`;
+                scheduleText += `*${c.course}*
+                \n🕒 Time: ${c.time}
+                \n🏢 Venue: ${c.venue}\n\n`;
     })
     await sock.sendMessage(jid,
         {text: scheduleText.trim()},
