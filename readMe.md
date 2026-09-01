@@ -1,25 +1,20 @@
 # 🤖 iboT — WhatsApp Class Assistant
 
-> **Your personal class assistant, right inside WhatsApp.**
-
 iboT is a WhatsApp bot built with **Node.js and Baileys** to make managing my university schedule a little easier.
 
-It can send class reminders, display your timetable, provide course documents, and respond to useful commands — all directly through WhatsApp.
+It can send class reminders, display your timetable, provide course documents, and respond to useful commands directly through WhatsApp.
 
 ---
 
 ## Features
 
 * 📅 **Class Schedule** — View your weekly timetable.
-* 🎓 **Next Class** — Find out what class is coming up next.
 * 🔔 **Automatic Reminders** — Get notified before your classes.
   * ⏰ 1 hour 30 minutes before
   * ⏰ 30 minutes before
   * ⏰ 2 minutes before
 * 🔕 **Reminder Controls** — Turn reminders on or off whenever you want.
 * 📚 **Document System** — Request course documents directly from the bot.
-* 💬 **WhatsApp Replies** — Bot responses can quote the message they're responding to.
-* 🔄 **Automatic Reconnection** — Attempts to reconnect if WhatsApp disconnects.
 * 💾 **Lightweight Storage** — Uses local files for settings instead of requiring a database.
 
 ---
@@ -66,7 +61,7 @@ whatsapp-bot/
 
 ---
 
-# 🚀 Getting Started
+# Getting Started
 
 ## 1. Clone the repository
 
@@ -90,9 +85,8 @@ The project uses Baileys and other dependencies defined in `package.json`.
 Run:
 
 ```bash
-node src/index.js
+npm start
 ```
-
 You should see a QR code in your terminal.
 
 Open WhatsApp and go to:
@@ -110,18 +104,15 @@ Once connected in the terminal you should see:
 The bot is now ready.
 ---
 
-# 🤖 Commands
-
+# Commands
 Send:
 
 ```text
 .help
 ```
+to see all the available commands.
 
-to see the available commands.
+# NOTE
 
-### Available commands
-
-| Command | Description |
-| ------- | ----------- |
-| `.ping` |             |
+> **The Bot is still under development and some of the features, so you may encounter some bugs.**
+> **Don't forget to leave a star and follow me as this helps me alot thank you**
