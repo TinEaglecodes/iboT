@@ -5,6 +5,8 @@ import timetableCommand from "../commands/timetable/schedule";
 import reminderCommand from "../commands/reminder/reminder.js";
 import sendCommand from "../commands/document/send.js";
 import {saveDocument} from "../commands/document/documentStore.js";
+import listCommand from "../commands/document/documents.js";
+import deleteCommand from "../commands/document/delete.js";
 
 export default async function handleMessage(sock, message){
     const input = message.message.conversation || message.message.extendedTextMessage?.text || "";
@@ -64,6 +66,10 @@ export default async function handleMessage(sock, message){
     if(text===".schedule"|| text===". schedule"){
         await timetableCommand(sock, jid, message)
     }
+    //list documents command
+    if(text===".documents"|| text===". documents"){
+        await listCommand(sock, jid, message)
+    }
     //reminder command
     if (text.startsWith(".reminder")) {
         const args = text
@@ -94,7 +100,23 @@ export default async function handleMessage(sock, message){
     return;
     }
 
-    else if(text != ".info" && text != ". info" && text != ".ping" && text != ". ping" && text != ".help" && text != ". help" && text != ".schedule" && text != ". schedule" && !text.startsWith(".reminder") && !text.startsWith(".send")){
+    //delete command
+    if (text.startsWith(".delete")) {
+    const args = text
+        .split(" ")
+        .slice(1);
+
+    await deleteCommand(
+        sock,
+        jid,
+        message,
+        args
+    );
+    return;
+    }
+
+
+    else if(text != ".info" && text != ". info" && text != ".ping" && text != ". ping" && text != ".help" && text != ". help" && text != ".schedule" && text != ". schedule" && !text.startsWith(".reminder") && !text.startsWith(".send") && !text.startsWith(".delete") && text != ".documents" && text != ". documents"){
         //replies to non-commands with command guide
         await sock.sendMessage(jid,
             {text: `🤖ERROR, that's not part of my commands, try these instead:
@@ -104,6 +126,7 @@ export default async function handleMessage(sock, message){
 📚 *.reminder {on}/{off}* - See your next class.
 🗓️ *.schedule* - View your class timetable.
 📄 *.send <document name>* - Request a specific document from my storage.
+🗑️ *.delete <document name>* - Delete a specific document from my records.
 `},
             {quoted: message}
         )

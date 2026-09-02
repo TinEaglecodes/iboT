@@ -86,7 +86,6 @@ export function saveDocument(name, message) {
     console.log(`📄 Document saved: ${documentName}`);
 }
 
-
 export function getDocument(name) {
 
     const documents = loadDocuments();
@@ -96,8 +95,21 @@ export function getDocument(name) {
     return documents[documentName] || null;
 }
 
-
 export function getAllDocuments() {
 
     return loadDocuments();
+}
+
+export function deleteDocument(name) {
+    const documents = loadDocuments();
+
+    const documentName = name.trim().toLowerCase();
+
+    if (!documents[documentName]) {
+        return false;
+    }
+
+    delete documents[documentName];
+    saveDocuments(documents);
+    return true;
 }

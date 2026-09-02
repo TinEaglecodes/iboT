@@ -53,50 +53,6 @@
       }
     }
   },
-  "timetable": {
-    "name": "timetable",
-    "jid": "60717986238497@lid",
-    "messageId": "AC4D01D9E9BA430F4AD7F58470F209D9",
-    "message": {
-      "key": {
-        "remoteJid": "60717986238497@lid",
-        "remoteJidAlt": "2349069068239@s.whatsapp.net",
-        "fromMe": false,
-        "id": "AC4D01D9E9BA430F4AD7F58470F209D9",
-        "participant": "",
-        "addressingMode": "lid"
-      },
-      "messageTimestamp": 1788383107,
-      "pushName": "tobi",
-      "broadcast": false,
-      "message": {
-        "documentMessage": {
-          "url": "https://mmg.whatsapp.net/v/t62.7119-24/642939938_2128757658050973_3402356549656279297_n.enc?ccb=11-4&oh=01_Q5Aa5QHg5Cx_t7SkpmmbSPrMYwMZ9IUu0KmBiPb0dBjjUVL6JA&oe=6ABFF3D5&_nc_sid=5e03e0&mms3=true",
-          "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          "fileSha256": "P28AoR0xjGLNCbaQV7o57qrz2QiFMxucHm+wY6UwBnw=",
-          "fileLength": "9546",
-          "pageCount": 0,
-          "mediaKey": "5RNF4o2h/MReW4UBPEoqq1dt1qSNTbF8wXGABnHZE/A=",
-          "fileName": "SEN 200 Timetable.docx",
-          "fileEncSha256": "D40cJJRD8AL7gnNUpbM5EP9Py0usOW2UREoMeUV7S7E=",
-          "directPath": "/v/t62.7119-24/642939938_2128757658050973_3402356549656279297_n.enc?ccb=11-4&oh=01_Q5Aa5QHg5Cx_t7SkpmmbSPrMYwMZ9IUu0KmBiPb0dBjjUVL6JA&oe=6ABFF3D5&_nc_sid=5e03e0",
-          "mediaKeyTimestamp": "1788383106",
-          "contextInfo": {},
-          "caption": "Timetable"
-        },
-        "messageContextInfo": {
-          "deviceListMetadata": {
-            "senderKeyHash": "SzmssKoTOPjo4Q==",
-            "senderTimestamp": "1787185931",
-            "recipientKeyHash": "bw9m+khwRqJS4w==",
-            "recipientTimestamp": "1787187119"
-          },
-          "deviceListMetadataVersion": 2,
-          "messageSecret": "8b+Ua1at3vuQvVdogQ62HnCKH5bURt3GSkGMO+f2rkI="
-        }
-      }
-    }
-  },
   "sen 200 timetable": {
     "name": "sen 200 timetable",
     "jid": "60717986238497@lid",
