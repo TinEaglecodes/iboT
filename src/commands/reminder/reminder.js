@@ -67,7 +67,7 @@ You can turn them back on anytime with: ".reminder on"
         const enabled = getReminderStatus(jid);
         
         //typing state
-        await sock.sendPresenceUpdate('composing', jid)
+        await sock.sendPresenceUpdate('composing', jid);
         await sock.sendMessage(
             jid,
             {

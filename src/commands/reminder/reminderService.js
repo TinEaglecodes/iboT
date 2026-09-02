@@ -20,10 +20,6 @@ const reminderTimes = [
     },  
 ];
 
-// Users who should receive reminders
-//Add numbers here for test
-
-
 // Prevent duplicate reminders
 const sentReminders = new Set();
 
@@ -43,10 +39,10 @@ export function startReminderService(sock) {
     // Check immediately
     checkSchedule(sock);
 
-    // Check every 10 seconds
+    // Check every 30 seconds
     reminderInterval = setInterval(() => {
         checkSchedule(sock);
-    }, 10 * 1000);
+    }, 30 * 1000);
 }
 
 
@@ -68,9 +64,10 @@ function checkSchedule(sock) {
 
     const classesToday = schedule[today];
 
-    console.log(
-        `⏰ Checking schedule: ${today} ${now.toLocaleTimeString()}`
-    );
+    //Test to make sure the schedule is being checked correctly
+    // console.log(
+    //     `⏰ Checking schedule: ${today} ${now.toLocaleTimeString()}`
+    // );
 
     if (!classesToday || classesToday.length === 0) {
         console.log("📭 No classes today.");
@@ -81,7 +78,6 @@ function checkSchedule(sock) {
         checkClass(sock, classInfo, now);
     }
 }
-
 
 function checkClass(sock, classInfo, now) {
 
@@ -98,10 +94,11 @@ function checkClass(sock, classInfo, now) {
 
     const differenceMinutes = differenceMs / 60000;
 
-    //test to echeck if the difference in minutes is being calculated correctly
-    // console.log(
-    //     `📚 ${classInfo.course} starts in ${differenceMinutes.toFixed(2)} minutes`
-    // );
+    /*test to check if the difference in minutes is being calculated correctly
+    * console.log(
+    *   `📚 ${classInfo.course} starts in ${differenceMinutes.toFixed(2)} minutes`
+    );
+    */
 
     for (const reminder of reminderTimes) {
         
@@ -140,7 +137,6 @@ async function sendReminder(sock, classInfo, reminder) {
         return;
     }
 
-
     const users = getAllReminderUsers();
 
     if (users.length === 0) {
@@ -156,7 +152,6 @@ Your *${classInfo.course}* class
 🕐 ${classInfo.time}
 📍 ${classInfo.venue}
 `;
-
 
     for (const jid of users) {
         const enabled = getReminderStatus(jid);
