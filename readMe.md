@@ -115,4 +115,7 @@ to see all the available commands.
 # NOTE
 
 > **The Bot is still under development and some of the features, so you may encounter some bugs.**
+
+---
+
 > **Don't forget to leave a star and follow me as this helps me alot thank you**
