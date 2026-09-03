@@ -26,8 +26,6 @@ It can send class reminders, display your timetable, provide course documents, a
 * **Baileys** — WhatsApp Web API library
 * **Pino** — Logging
 * **QRCode Terminal** — Displays the WhatsApp login QR code
-* **JSON** — Lightweight local settings storage
-
 ---
 
 ## 📁 Project Structure

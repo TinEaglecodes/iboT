@@ -71,7 +71,7 @@ export default async function handleMessage(sock, message){
         await listCommand(sock, jid, message)
     }
     //reminder command
-    if (text.startsWith(".reminder")) {
+    if (text.startsWith(".reminder") || text.startsWith(". reminder")) {
         const args = text
             .split(" ")
             .slice(1);
@@ -84,7 +84,7 @@ export default async function handleMessage(sock, message){
     );
     }
     //send command
-    if (text.startsWith(".send")) {
+    if (text.startsWith(".send") || text.startsWith(". send")){
 
     const args = text
         .split(" ")
@@ -96,12 +96,11 @@ export default async function handleMessage(sock, message){
         message,
         args
     );
-
     return;
     }
 
     //delete command
-    if (text.startsWith(".delete")) {
+    if (text.startsWith(".delete") || text.startsWith(". delete")) {
     const args = text
         .split(" ")
         .slice(1);
@@ -114,7 +113,6 @@ export default async function handleMessage(sock, message){
     );
     return;
     }
-
 
     else if(text != ".info" && text != ". info" && text != ".ping" && text != ". ping" && text != ".help" && text != ". help" && text != ".schedule" && text != ". schedule" && !text.startsWith(".reminder") && !text.startsWith(".send") && !text.startsWith(".delete") && text != ".documents" && text != ". documents"){
         //replies to non-commands with command guide
