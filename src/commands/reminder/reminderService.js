@@ -1,6 +1,7 @@
 import schedule from "../timetable/listofClass.js";
 import {getReminderStatus, getAllReminderUsers} from "./reminderSettings.js";
 
+//edit reminder times here
 const reminderTimes = [
     {
         minutes: 60,
