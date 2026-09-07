@@ -31,14 +31,11 @@ I'll remind you:
 You can turn them off with: ".reminder off"
 `
             },
-            {
-                quoted: message
-            }
+            {quoted: message}
         );
 
         return;
     }
-
 
     // TURN OFF
     if (option === "off") {
@@ -81,9 +78,7 @@ Status: ${enabled ? "🟢 ON" : "🔴 OFF"}
 ⏰ 15m before class
 ⏰ now`
             },
-            {
-                quoted: message
-            }
+            {quoted: message}
         );
 
         return;
@@ -108,8 +103,6 @@ Turn reminders OFF
 .reminder status
 Check your reminder settings`
         },
-        {
-            quoted: message
-        }
+        {quoted: message}
     );
 }

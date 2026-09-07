@@ -86,6 +86,8 @@ Make sure you typed the document name correctly`
             "❌ Error sending document reference:",
             error
         );
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(
             jid,
             {
