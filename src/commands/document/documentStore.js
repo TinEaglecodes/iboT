@@ -41,9 +41,8 @@ function deserialize(key, value) {
 function loadDocuments() {
     try {
         const data = fs.readFileSync(FILE, "utf8");
-
         return JSON.parse(data, deserialize);
-
+        
     } catch (error) {
         return {};
     }
@@ -65,31 +64,24 @@ function cleanName(name) {
         .toLowerCase();
 }
 
-
 export function saveDocument(name, message) {
 
     const documents = loadDocuments();
-
     const documentName = cleanName(name);
 
     documents[documentName] = {
         name: documentName,
         jid: message.key.remoteJid,
-        messageId: message.key.id,
-
-        // Save the original WhatsApp message
-        message: message
+        messageId: message.key.id
     };
 
     saveDocuments(documents);
-
     console.log(`📄 Document saved: ${documentName}`);
 }
 
 export function getDocument(name) {
 
     const documents = loadDocuments();
-
     const documentName = cleanName(name);
 
     return documents[documentName] || null;
@@ -102,7 +94,6 @@ export function getAllDocuments() {
 
 export function deleteDocument(name) {
     const documents = loadDocuments();
-
     const documentName = name.trim().toLowerCase();
 
     if (!documents[documentName]) {
