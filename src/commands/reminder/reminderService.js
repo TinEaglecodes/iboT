@@ -1,7 +1,7 @@
 import schedule from "../timetable/listofClass.js";
-import {getReminderStatus, getAllReminderUsers} from "./reminderSettings.js";
+import {getReminderStatus,getAllReminderUsers} from "./reminderSettings.js";
 
-//edit reminder times here
+// Edit reminder times here
 const reminderTimes = [
     {
         minutes: 60,
@@ -17,37 +17,48 @@ const reminderTimes = [
     },
     {
         minutes: 0,
-        label: "Now",
-    },  
+        label: "Now"
+    }
 ];
 
 // Prevent duplicate reminders
 const sentReminders = new Set();
 
 let reminderInterval = null;
+let currentSock = null;
 
 
+// Start the reminder service
 export function startReminderService(sock) {
 
-    // Prevent accidentally starting multiple schedulers
+    // Always use the newest WhatsApp socket
+    currentSock = sock;
+
+    // If the scheduler is already running,
+    // we don't need another interval.
     if (reminderInterval) {
-        console.log("⏰ Reminder service is already running.");
+        console.log("⏰ Reminder service already running — socket updated.");
         return;
     }
 
     console.log("⏰ Reminder service started.");
 
     // Check immediately
-    checkSchedule(sock);
+    checkSchedule();
 
     // Check every 30 seconds
     reminderInterval = setInterval(() => {
-        checkSchedule(sock);
+        checkSchedule();
     }, 30 * 1000);
 }
 
 
-function checkSchedule(sock) {
+function checkSchedule() {
+    // No active WhatsApp connection
+    if (!currentSock) {
+        console.log("⚠️ No WhatsApp socket available.");
+        return;
+    }
 
     const now = new Date();
 
@@ -65,22 +76,17 @@ function checkSchedule(sock) {
 
     const classesToday = schedule[today];
 
-    //Test to make sure the schedule is being checked correctly
-    // console.log(
-    //     `⏰ Checking schedule: ${today} ${now.toLocaleTimeString()}`
-    // );
-
     if (!classesToday || classesToday.length === 0) {
         console.log("📭 No classes today.");
         return;
     }
 
     for (const classInfo of classesToday) {
-        checkClass(sock, classInfo, now);
+        checkClass(classInfo, now);
     }
 }
 
-function checkClass(sock, classInfo, now) {
+function checkClass(classInfo, now) {
 
     const classTime = new Date(now);
 
@@ -91,34 +97,22 @@ function checkClass(sock, classInfo, now) {
         0
     );
 
-    const differenceMs = classTime.getTime() - now.getTime();
+    const differenceMs =
+        classTime.getTime() - now.getTime();
 
-    const differenceMinutes = differenceMs / 60000;
-
-    /*test to check if the difference in minutes is being calculated correctly
-    * console.log(
-    *   `📚 ${classInfo.course} starts in ${differenceMinutes.toFixed(2)} minutes`
-    );
-    */
+    const differenceMinutes =
+        differenceMs / 60000;
 
     for (const reminder of reminderTimes) {
-        
+
         const reminderTime = reminder.minutes;
-        /*
-         * Instead of checking:
-         *
-         * differenceMinutes === 90
-         *
-         * we check whether we're inside the
-         * 1-minute window around the reminder.
-         */
+
         if (
             differenceMinutes <= reminderTime &&
             differenceMinutes > reminderTime - 1
         ) {
 
             sendReminder(
-                sock,
                 classInfo,
                 reminder
             );
@@ -126,9 +120,11 @@ function checkClass(sock, classInfo, now) {
     }
 }
 
-async function sendReminder(sock, classInfo, reminder) {
 
-    const today = new Date().toLocaleDateString("en-CA");
+async function sendReminder(classInfo, reminder) {
+
+    const today =
+        new Date().toLocaleDateString("en-CA");
 
     const reminderKey =
         `${today}-${classInfo.course}-${reminder.minutes}`;
@@ -145,32 +141,40 @@ async function sendReminder(sock, classInfo, reminder) {
         return;
     }
 
-    const message =`
+    const message = `
 Your *${classInfo.course}* class
 
-⏰starts *${reminder.label}*.
+⏰ starts *${reminder.label}*.
 
 🕐 ${classInfo.time}
 📍 ${classInfo.venue}
 `;
 
     for (const jid of users) {
-        const enabled = getReminderStatus(jid);
+        const enabled =
+            getReminderStatus(jid);
 
         if (!enabled) {
-
             console.log(
                 `🔕 Reminders OFF for ${jid}`
             );
-
             continue;
         }
 
         try {
 
-            await sock.sendMessage(jid, {
-                text: message
-            });
+            await currentSock.sendPresenceUpdate(
+                "composing",
+                jid
+            );
+            //typing state
+            await currentSock.sendPresenceUpdate("available",jid);
+            await currentSock.sendMessage(
+                jid,
+                {
+                    text: message
+                }
+            );
 
             console.log(
                 `✅ ${reminder.label} reminder sent for ${classInfo.course} → ${jid}`

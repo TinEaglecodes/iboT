@@ -8,8 +8,7 @@ import P from "pino";
 import handleMessage from "./handlers/messageHandler.js";
 import { startReminderService } from "./commands/reminder/reminderService.js";
 
-
-let reminderStarted= false 
+// let reminderStarted = false;
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState("./auth_info");
@@ -24,7 +23,8 @@ async function startBot() {
 
   sock.ev.on("connection.update", ({ connection, lastDisconnect, qr }) => {
     if (qr) {
-      console.log("Scan this QR code with your WhatsApp to connect to iboT. /n Settings > linked devices > Link a device > scan QR code");
+      console.log("Scan this QR code with your WhatsApp to connect to iboT./n"+
+        " Settings > linked devices > Link a device > scan QR code");
 
       //generate QR code to connect
       qrcode.generate(qr, { small: true });
@@ -34,12 +34,10 @@ async function startBot() {
     //connection message
     if (connection === "open") {
       console.log("---✅ iboT is connected!---");
-      if (!reminderStarted){
-        
-        startReminderService(sock);
-
-        reminderStarted = true;
-      }
+      startReminderService(sock)
+      // if (!reminderStarted){
+      //   startReminderService(sock);
+      // }
     }
 
     if (connection === "close") {
