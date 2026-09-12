@@ -13,7 +13,7 @@ const schedule = {
     ],
     "wednesday": [
         { course: "SEN 208 practicals", time: "08:00 AM - 10:00 AM", venue: "OLd SOC middle room", startHour: 8, startMinute: 0 },
-        { course: "CSC 206 / IFT 204", time: "02:00 PM - 04:00 PM", venue: "3-IN-1 LT2", startHour: 14, startMinute: 0 }
+        { course: "CSC 206", time: "02:00 PM - 04:00 PM", venue: "3-IN-1 LT2", startHour: 14, startMinute: 0 }
     ],
     "thursday": [
         { course: "SEN 208", time: "08:00 AM - 10:00 AM", venue: "3-IN-1 LT2", startHour: 8, startMinute: 0 },
