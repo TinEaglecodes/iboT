@@ -1,4 +1,4 @@
-const schedule = {
+const softwareEngineering = {
     //an empty object signifies a free day
     //startHour: the time a class is meant to start
     //startMinute: the minute a class is meant to start
@@ -26,4 +26,4 @@ const schedule = {
     ],
     "sunday": []
     }
-export default schedule;
+export default softwareEngineering;

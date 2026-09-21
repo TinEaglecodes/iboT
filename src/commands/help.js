@@ -9,7 +9,8 @@ export default async function helpCommand(sock, jid, message) {
 🏓 *.ping* - Check if I’m active.
 🤖 *.info* - Know more about me.
 📖 *.help* - Show this command menu.
-📚 *.reminder {on}/{off}* - See your next class.
+🗓️ *.department* - Choose your department
+📚 *.reminder {on}/{off}* - Get a reminder when your class is about to start.
 🗓️ *.schedule* - View your class timetable.
 📄 *.send <document name>* - Request a specific document from my storage.
 📄*.documents* - View all available documents in my records.

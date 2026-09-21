@@ -1,5 +1,6 @@
-import schedule from "../timetable/listofClass.js";
-import {getReminderStatus,getAllReminderUsers} from "./reminderSettings.js";
+import { getReminderStatus, getAllReminderUsers } from "./reminderSettings.js";
+import { getDepartment } from "../department/deptSettings.js";
+import getSchedule from "../timetable/getSchedule.js";
 
 // Edit reminder times here
 const reminderTimes = [
@@ -34,8 +35,7 @@ export function startReminderService(sock) {
     // Always use the newest WhatsApp socket
     currentSock = sock;
 
-    // If the scheduler is already running,
-    // we don't need another interval.
+    // Don't start another interval if one is already running
     if (reminderInterval) {
         console.log("⏰ Reminder service already running — socket updated.");
         return;
@@ -53,7 +53,9 @@ export function startReminderService(sock) {
 }
 
 
+// Check everyone's timetable
 function checkSchedule() {
+
     // No active WhatsApp connection
     if (!currentSock) {
         console.log("⚠️ No WhatsApp socket available.");
@@ -74,19 +76,63 @@ function checkSchedule() {
 
     const today = days[now.getDay()];
 
-    const classesToday = schedule[today];
+    // Get all users who have reminder settings
+    const users = getAllReminderUsers();
 
-    if (!classesToday || classesToday.length === 0) {
-        console.log("📭 No classes today.");
+    if (users.length === 0) {
+        
+        // disable because it sends too much console.log("📭 No users registered for reminders.");
         return;
     }
 
-    for (const classInfo of classesToday) {
-        checkClass(classInfo, now);
+    // Check each user's timetable separately
+    for (const jid of users) {
+
+        // Check whether reminders are enabled
+        const enabled = getReminderStatus(jid);
+
+        if (!enabled) {
+            console.log(`🔕 Reminders OFF for ${jid}`);
+            continue;
+        }
+
+        // Get user's department
+        const department = getDepartment(jid);
+
+        if (!department) {
+            console.log(
+                `⚠️ No department selected for ${jid}`
+            );
+            continue;
+        }
+
+        // Get timetable for user's department
+        const schedule = getSchedule(department);
+
+        if (!schedule) {
+            console.log(
+                `⚠️ No timetable found for department ${department}`
+            );
+            continue;
+        }
+
+        // Get today's classes
+        const classesToday = schedule[today];
+
+        if (!classesToday || classesToday.length === 0) {
+            continue;
+        }
+
+        // Check each class
+        for (const classInfo of classesToday) {
+            checkClass(classInfo, jid, now);
+        }
     }
 }
 
-function checkClass(classInfo, now) {
+
+// Check whether a class needs a reminder
+function checkClass(classInfo, jid, now) {
 
     const classTime = new Date(now);
 
@@ -111,33 +157,29 @@ function checkClass(classInfo, now) {
             differenceMinutes <= reminderTime &&
             differenceMinutes > reminderTime - 1
         ) {
-
             sendReminder(
                 classInfo,
-                reminder
+                reminder,
+                jid
             );
         }
     }
 }
 
 
-async function sendReminder(classInfo, reminder) {
+// Send reminder to one specific user
+async function sendReminder(classInfo, reminder, jid) {
 
     const today =
         new Date().toLocaleDateString("en-CA");
 
+    // Include JID and class time so different users/classes
+    // don't interfere with each other's reminders
     const reminderKey =
-        `${today}-${classInfo.course}-${reminder.minutes}`;
+        `${today}-${jid}-${classInfo.course}-${classInfo.startHour}-${classInfo.startMinute}-${reminder.minutes}`;
 
     // Prevent duplicate reminders
     if (sentReminders.has(reminderKey)) {
-        return;
-    }
-
-    const users = getAllReminderUsers();
-
-    if (users.length === 0) {
-        console.log("📭 No users registered for reminders.");
         return;
     }
 
@@ -150,44 +192,37 @@ Your *${classInfo.course}* class
 📍 ${classInfo.venue}
 `;
 
-    for (const jid of users) {
-        const enabled =
-            getReminderStatus(jid);
+    try {
 
-        if (!enabled) {
-            console.log(
-                `🔕 Reminders OFF for ${jid}`
-            );
-            continue;
-        }
+        await currentSock.sendPresenceUpdate(
+            "composing",
+            jid
+        );
 
-        try {
+        await currentSock.sendPresenceUpdate(
+            "available",
+            jid
+        );
 
-            await currentSock.sendPresenceUpdate(
-                "composing",
-                jid
-            );
-            //typing state
-            await currentSock.sendPresenceUpdate("available",jid);
-            await currentSock.sendMessage(
-                jid,
-                {
-                    text: message
-                }
-            );
+        await currentSock.sendMessage(
+            jid,
+            {
+                text: message
+            }
+        );
 
-            console.log(
-                `✅ ${reminder.label} reminder sent for ${classInfo.course} → ${jid}`
-            );
+        console.log(
+            `✅ ${reminder.label} reminder sent for ${classInfo.course} → ${jid}`
+        );
 
-        } catch (error) {
+        // Only mark as sent after successfully sending
+        sentReminders.add(reminderKey);
 
-            console.error(
-                `❌ Failed to send reminder to ${jid}:`,
-                error
-            );
-        }
+    } catch (error) {
+
+        console.error(
+            `❌ Failed to send reminder to ${jid}:`,
+            error
+        );
     }
-    // Mark reminder as processed
-    sentReminders.add(reminderKey);
 }

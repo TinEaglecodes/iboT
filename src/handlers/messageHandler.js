@@ -7,6 +7,8 @@ import sendCommand from "../commands/document/send.js";
 import {saveDocument} from "../commands/document/documentStore.js";
 import listCommand from "../commands/document/documents.js";
 import deleteCommand from "../commands/document/delete.js";
+import departmentCommand from "../commands/department/department.js";
+import { getDepartment } from "../commands/department/deptSettings.js";
 
 //list of all commands
 const exactCommands = new Set([
@@ -19,7 +21,9 @@ const exactCommands = new Set([
     ".schedule",
     ". schedule",
     ".documents",
-    ". documents"
+    ". documents",
+    ".department",
+    ". department",
 ]);
 
 const prefixCommands = [
@@ -49,13 +53,52 @@ export default async function handleMessage(sock, message) {
 
     const text = input.toLowerCase().trim();
     const jid = message.key.remoteJid;
+    const department= getDepartment(jid)
 
     // Mark message as read
     await sock.readMessages([message.key]);
     //Show online state
     await sock.sendPresenceUpdate("available",jid);
-
     console.log(`📩 ${jid}: ${text}`);
+
+    // department command
+    if (text === ".department" || text === ". department" || text.startsWith(".department ") || text.startsWith(". department ")
+    ){
+        const args = text
+            .replace(/^\. ?department\s*/, "")
+            .split(/\s+/)
+            .filter(Boolean);
+
+        await departmentCommand(sock,jid,message, args);
+        return;
+    }
+
+    if (!department) {
+    await sock.sendMessage(
+        jid,
+        {
+            text:
+`👋 *Hey There I'm iboT*
+
+Before you can use the timetable feature, I need to know your department.
+
+🎓 Please select your department:
+
+1️⃣ Software Engineering
+2️⃣ Computer Science
+
+Reply with:
+
+*.department 1*
+
+or
+
+*.department 2*`
+        },
+        { quoted: message }
+    );
+    return;
+}
 
     // Document saving
     const documentMessage =
@@ -117,7 +160,6 @@ You can request it later with:
     }
 
     // Schedule command
-
     if (text === ".schedule" || text === ". schedule"
     ){
         await timetableCommand(sock,jid,message);
@@ -132,7 +174,6 @@ You can request it later with:
     }
 
     // Reminder command
-
     if (text.startsWith(".reminder") || text.startsWith(". reminder")
     ) {
         const args = text
@@ -171,9 +212,9 @@ You can request it later with:
     if (!isCommand(text)) {
         await sock.sendMessage(jid,
             {text:
-`🤖 *ERROR*
+`*ERROR*
 
-That's not part of my commands.
+Sorry, That's not part of my commands.
 
 Try *.help* to see what I can do.`
             },
