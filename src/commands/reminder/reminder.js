@@ -1,12 +1,6 @@
 import { getReminderStatus, setReminderStatus} from "./reminderSettings.js";
 
-export default async function reminderCommand(
-    sock,
-    jid,
-    message,
-    args
-) {
-
+export default async function reminderCommand(sock, jid, message, args) {
     const option = args[0]?.toLowerCase();
 
     // TURN ON
@@ -15,7 +9,6 @@ export default async function reminderCommand(
         setReminderStatus(jid, true);
         //typing state
         await sock.sendPresenceUpdate('composing', jid)
-
         await sock.sendMessage(
             jid,
             {
@@ -33,13 +26,11 @@ You can turn them off with: ".reminder off"
             },
             {quoted: message}
         );
-
         return;
     }
 
     // TURN OFF
     if (option === "off") {
-
         setReminderStatus(jid, false);
         //typing state
         await sock.sendPresenceUpdate('composing', jid)
@@ -50,11 +41,8 @@ You can turn them off with: ".reminder off"
 `🔕 *Reminders OFF*
 You can turn them back on anytime with: ".reminder on"
 `},
-            {
-                quoted: message
-            }
+            {quoted: message}
         );
-
         return;
     }
 
@@ -80,7 +68,6 @@ Status: ${enabled ? "🟢 ON" : "🔴 OFF"}
             },
             {quoted: message}
         );
-
         return;
     }
 

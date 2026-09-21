@@ -55,10 +55,8 @@ export default async function handleMessage(sock, message) {
     const jid = message.key.remoteJid;
     const department= getDepartment(jid)
 
-    // Mark message as read
-    await sock.readMessages([message.key]);
-    //Show online state
-    await sock.sendPresenceUpdate("available",jid);
+    await sock.readMessages([message.key]); // Mark message as read
+    await sock.sendPresenceUpdate('available', jid);  //Show online state
     console.log(`📩 ${jid}: ${text}`);
 
     // department command
@@ -74,26 +72,25 @@ export default async function handleMessage(sock, message) {
     }
 
     if (!department) {
+    //typing state
+    await sock.sendPresenceUpdate('composing', jid)
     await sock.sendMessage(
         jid,
         {
             text:
 `👋 *Hey There I'm iboT*
 
-Before you can use the timetable feature, I need to know your department.
+Before we start, I need to know your department.
 
-🎓 Please select your department:
+🎓What department are you in:
 
 1️⃣ Software Engineering
 2️⃣ Computer Science
 
-Reply with:
+Reply with: *.department <number>
 
-*.department 1*
-
-or
-
-*.department 2*`
+For Example: .department 1*
+`
         },
         { quoted: message }
     );
@@ -110,6 +107,8 @@ or
         const documentName = caption || fileName;
 
         if (!documentName) {
+            //typing state
+            await sock.sendPresenceUpdate('composing', jid) 
             await sock.sendMessage(jid,
                 {text:
 `⚠️ I couldn't determine the name of this document.
@@ -124,7 +123,8 @@ Example:
             return;
         }
         saveDocument(documentName,message);
-
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(jid,
             {
                 text:
@@ -210,6 +210,8 @@ You can request it later with:
 
     // non-command input
     if (!isCommand(text)) {
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(jid,
             {text:
 `*ERROR*

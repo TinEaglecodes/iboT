@@ -13,6 +13,8 @@ const departments={
 
 export default async function departmentCommand(sock, jid, message, args) {
     if(!args[0]){
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(jid, {
             text: `🎓 *Select your department*
 
@@ -31,6 +33,8 @@ Example:
 
     setDepartment(jid, selected.value);
 
+    //typing state
+    await sock.sendPresenceUpdate('composing', jid)
     await sock.sendMessage(
         jid, {
             text:`✅ *Department saved!*

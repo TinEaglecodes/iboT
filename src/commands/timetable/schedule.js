@@ -17,6 +17,8 @@ export default async function timetableCommand(sock, jid, message) {
 
     // User hasn't selected a department
     if (!department) {
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(
             jid,
             {text:
@@ -38,6 +40,8 @@ to select your department.`
 
     // Safety check
     if (!schedule) {
+            //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(
             jid,
             {
@@ -49,9 +53,6 @@ to select your department.`
         return;
     }
 
-    // Typing state
-    await sock.sendPresenceUpdate("composing", jid);
-
     // Get today's day
     const todayName = days[new Date().getDay()];
 
@@ -60,6 +61,8 @@ to select your department.`
 
     // No classes today
     if (!todayClass || todayClass.length === 0) {
+        //typing state
+        await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(
             jid,
             {
@@ -82,9 +85,8 @@ to select your department.`
 
 `;
     });
-     //typing state
+    //typing state
     await sock.sendPresenceUpdate('composing', jid)
-
     await sock.sendMessage(
         jid,
         {
