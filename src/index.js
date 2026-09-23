@@ -62,7 +62,6 @@ async function startBot() {
     if (!message.message) return;
     if (message.key.fromMe) return;
 
-    
     //import commands 
     await handleMessage(sock, message);
   })

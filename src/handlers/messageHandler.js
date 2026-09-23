@@ -14,8 +14,8 @@ import { getDepartment } from "../commands/department/deptSettings.js";
 const exactCommands = new Set([
     ".info",
     ". info",
-    ".ping",
-    ". ping",
+    // ".ping",
+    // ". ping",
     ".help",
     ". help",
     ".schedule",
