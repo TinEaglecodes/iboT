@@ -30,7 +30,6 @@ Example:
     }
 
     const selected = departments[args[0]];
-
     setDepartment(jid, selected.value);
 
     //typing state

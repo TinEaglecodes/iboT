@@ -7,10 +7,10 @@ export default async function deleteCommand(sock, jid,message, args){
         //typing state
         await sock.sendPresenceUpdate('composing', jid)
         await sock.sendMessage(jid,
-            {text:`📚*Document Deletion Error*
-Tell me which document you want to delete with: .delete <document name>
+            {text:`📚*Document Removal Error*
+Tell me which document you want to delete with: .remove <document name>
 
-Example: .delete SEN 202`},
+Example: .remove SEN 202`},
             {quoted: message}
         );
         return;
@@ -36,7 +36,7 @@ Example: .delete SEN 202`},
     await sock.sendMessage(
         jid,
         {
-            text: `🗑️ *${documentName.toUpperCase()}* has been deleted from my records.`
+            text: `🗑️ *${documentName.toUpperCase()}* has been removed from my records.`
         },
         { quoted: message }
     );

@@ -1,11 +1,6 @@
 import { getDocument } from "./documentStore.js";
 
-export default async function sendCommand(
-    sock,
-    jid,
-    message,
-    args
-){
+export default async function sendCommand(sock, jid, message, args){
 
     const documentName = args.join(" ").trim();
 
@@ -77,10 +72,6 @@ Make sure you typed the document name correctly`
             {quoted: originalMessage}
         );
 
-        console.log(
-            `📄 Sent document reference: ${document.name} → ${jid}`
-        );
-
     } catch (error) {
         console.error(
             "❌ Error sending document reference:",
@@ -91,8 +82,7 @@ Make sure you typed the document name correctly`
         await sock.sendMessage(
             jid,
             {
-                text:
-`❌ I couldn't reply with *${document.name}* right now.`
+                text:`❌ I couldn't reply with *${document.name}* right now.`
             },
             {quoted: message}
         );

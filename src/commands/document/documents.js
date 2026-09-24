@@ -13,7 +13,8 @@ To request a document, use the command:
     if(documentList.length ===0){
         //typing state
         await sock.sendPresenceUpdate('composing', jid)
-        await sock.sendMessage(jid, { text: `There are currently no documents available.` }, {quoted: message});
+        await sock.sendMessage(jid, { text: `There are currently no documents available.` },
+            {quoted: message});
         return
     }
 

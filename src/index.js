@@ -35,9 +35,6 @@ async function startBot() {
     if (connection === "open") {
       console.log("---✅ iboT is connected!---");
       startReminderService(sock)
-      // if (!reminderStarted){
-      //   startReminderService(sock);
-      // }
     }
 
     if (connection === "close") {

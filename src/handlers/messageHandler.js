@@ -1,5 +1,4 @@
 import infoCommand from "../commands/info.js";
-import pingCommand from "../commands/ping.js";
 import helpCommand from "../commands/help.js";   
 import timetableCommand from "../commands/timetable/schedule.js";
 import reminderCommand from "../commands/reminder/reminder.js";
@@ -14,8 +13,6 @@ import { getDepartment } from "../commands/department/deptSettings.js";
 const exactCommands = new Set([
     ".info",
     ". info",
-    // ".ping",
-    // ". ping",
     ".help",
     ". help",
     ".schedule",
@@ -31,8 +28,8 @@ const prefixCommands = [
     ". reminder",
     ".send",
     ". send",
-    ".delete",
-    ". delete"
+    ".remove",
+    ". remove"
 ];
 
 function isCommand(text) {
@@ -145,13 +142,6 @@ You can request it later with:
         return;
     }
 
-    //Ping command 
-    if (text === ".ping" || text === ". ping"
-    ) {
-        await pingCommand(sock,jid,message);
-        return;
-    }
-
     // Help command
     if (text === ".help" || text === ". help"
     ){
@@ -197,7 +187,7 @@ You can request it later with:
         return;
     }
 
-    if (text.startsWith(".delete") || text.startsWith(". delete")
+    if (text.startsWith(".remove") || text.startsWith(". remove")
     ) {
         const args = text
             .replace(/^\. ?delete\s*/, "")
