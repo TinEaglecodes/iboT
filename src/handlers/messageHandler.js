@@ -8,6 +8,8 @@ import listCommand from "../commands/document/documents.js";
 import deleteCommand from "../commands/document/delete.js";
 import departmentCommand from "../commands/department/department.js";
 import { getDepartment } from "../commands/department/deptSettings.js";
+import tomorrowCommand from "../commands/tomorrow.js";
+import todayCommand from "../commands/today.js";
 
 //list of all commands
 const exactCommands = new Set([
@@ -21,6 +23,10 @@ const exactCommands = new Set([
     ". documents",
     ".department",
     ". department",
+    ".tomorrow",
+    ". tomorrow",
+    ".today",
+    ". today",
 ]);
 
 const prefixCommands = [
@@ -160,6 +166,19 @@ You can request it later with:
     if ( text === ".documents" || text === ". documents"
     ) {
         await listCommand(sock,jid,message);
+        return;
+    }
+
+    if (text === ".today" || text === ". today"
+    ){
+        await todayCommand(sock,jid,message);
+        return;
+    }
+
+    // Tomorrow command
+    if ( text === ".tomorrow" || text === ". tomorrow"
+    ) {
+        await tomorrowCommand(sock,jid,message);
         return;
     }
 

@@ -14,6 +14,8 @@ export default async function helpCommand(sock, jid, message) {
 📄 *.send <document name>* - Request a specific document from my storage.
 📄*.documents* - View all available documents in my records.
 🗑️ *.remove <document name>* - Delete a specific document from my records.
+🗓️ *.tomorrow* - View your schedule for tomorrow.
+🗓️ *.today* - View your schedule for today.
     `},
     {quoted: message}
   );

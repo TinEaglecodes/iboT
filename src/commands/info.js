@@ -9,7 +9,7 @@ I’m your personal school assistant. I can:
 
 🗓️ Show your class schedule
 🔔 Remind you about upcoming classes
-📄 Keep track of PDFs you send me
+📄 Keep track of Documents you send me
 
 Just type *.help* to see what I can do.
 
