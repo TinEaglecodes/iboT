@@ -1,11 +1,17 @@
-import softwareEngineering from "./department timetable/softwareEngineering.js";
-import statistics from "./department timetable/statistics.js";
+import softwareEngineering200 from "./department timetable/softwareEngineering/200L.js";
+import statistics200 from "./department timetable/statistics/200L.js";
 
 const schedules = {
-    softwareEngineering,
-    statistics,
+    softwareEngineering: {
+        "200L": softwareEngineering200,
+    },
+    statistics: {
+        "200L": statistics200,
+    },
 };
 
-export default function getSchedule(department) {
-    return schedules[department] || null;
+export default function getSchedule(department, level) {
+    if (!department || !level) return null;
+
+    return schedules[department]?.[level] || null;
 }

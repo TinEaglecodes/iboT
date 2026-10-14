@@ -1,4 +1,4 @@
-import { getDepartment } from "../department/deptSettings.js";
+import { getDepartment, getLevel } from "../department/deptSettings.js";
 import getSchedule from "./getSchedule.js";
 
 const days = [
@@ -11,43 +11,57 @@ const days = [
     "sunday"
 ];
 
+const departmentNames = {
+    softwareEngineering: "Software Engineering",
+    statistics: "Statistics",
+};
+
 export default async function timetableCommand(sock, jid, message) {
     const department = getDepartment(jid);
+    const level = getLevel(jid);
 
     if (!department) {
         await sock.sendPresenceUpdate("composing", jid);
-        await sock.sendMessage(
-            jid,
-            {
-                text: `🎓 You haven't selected a department yet.
+        await sock.sendMessage(jid, {
+            text: `🎓 You haven't selected a department yet.
 
 Please use:
 
 *.department*
 
-to select your department.`
-            },
-            { quoted: message }
-        );
+to select your department and level.`
+        }, { quoted: message });
         return;
     }
 
-    const schedule = getSchedule(department);
+    if (!level) {
+        await sock.sendPresenceUpdate("composing", jid);
+        await sock.sendMessage(jid, {
+            text: `📚 You haven't selected your level yet.
+
+Please use *.department* to configure your department and level.`
+        }, { quoted: message });
+        return;
+    }
+
+    const schedule = getSchedule(department, level);
 
     if (!schedule) {
         await sock.sendPresenceUpdate("composing", jid);
-        await sock.sendMessage(
-            jid,
-            {
-                text: "⚠️ I couldn't find a timetable for your department."
-            },
-            { quoted: message }
-        );
+        await sock.sendMessage(jid, {
+            text: `⚠️ I couldn't find a timetable for:
+
+🎓 Department: ${departmentNames[department] || department}
+📚 Level: ${level}
+
+The timetable may not have been added yet.`
+        }, { quoted: message });
         return;
     }
 
     let scheduleText = `📚 *FULL WEEKLY TIMETABLE*\n`;
-    scheduleText += `🎓 Department: ${department}\n\n`;
+    scheduleText += `🎓 Department: ${departmentNames[department] || department}\n`;
+    scheduleText += `📚 Level: ${level}\n\n`;
 
     let hasClasses = false;
 
