@@ -6,16 +6,21 @@ export default async function helpCommand(sock, jid, message) {
   await sock.sendMessage(jid, {
     text: `🤖 *iboT — Command Me*
 
-🤖 *.info* - Know more about me.
+🤖 *.info* - Learn more about me.
 📖 *.help* - Show this command menu.
-🗓️ *.department* - Choose your department
-📚 *.reminder {on}/{off}* - Get a reminder when your class is about to start.
-🗓️ *.schedule* - View your class timetable.
-📄 *.send <document name>* - Request a specific document from my storage.
-📄*.documents* - View all available documents in my records.
-🗑️ *.remove <document name>* - Delete a specific document from my records.
-🗓️ *.tomorrow* - View your schedule for tomorrow.
-🗓️ *.today* - View your schedule for today.
+
+🎓 *.department* - Select your department and level.
+📚 *.schedule* - View your full weekly timetable.
+🗓️ *.today* - View your classes for today.
+🗓️ *.tomorrow* - View your classes for tomorrow.
+
+🔔 *.reminder on* - Turn class reminders on.
+🔕 *.reminder off* - Turn class reminders off.
+🔔 *.reminder status* - Check your reminder settings.
+
+📄 *.documents* - View all available documents.
+📄 *.send <document name>* - Request a document from my storage.
+🗑️ *.remove <document name>* - Delete a document from my storage.
     `},
     {quoted: message}
   );

@@ -10,7 +10,6 @@ const FILE = path.join(__dirname, "reminderSettings.json");
 function loadSettings() {
     try {
         const data = fs.readFileSync(FILE, "utf8");
-
         return JSON.parse(data);
     } catch (error) {
         return {};
@@ -27,7 +26,6 @@ function saveSettings(settings) {
 
 // Turn reminders ON/OFF for a user
 export function setReminderStatus(jid, enabled) {
-
     const settings = loadSettings();
 
     settings[jid] = {
@@ -39,7 +37,6 @@ export function setReminderStatus(jid, enabled) {
 
 // Check whether a user's reminders are enabled
 export function getReminderStatus(jid) {
-
     const settings = loadSettings();
 
     // New users are ON by default
@@ -51,8 +48,6 @@ export function getReminderStatus(jid) {
 
 // Get every user who has a reminder setting
 export function getAllReminderUsers() {
-
     const settings = loadSettings();
-
     return Object.keys(settings);
 }

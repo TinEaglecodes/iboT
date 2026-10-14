@@ -24,8 +24,7 @@ export default async function todayCommand(sock, jid, message) {
     if (!department || !level) {
         //typing state
         await sock.sendPresenceUpdate("composing", jid);
-        await sock.sendMessage(
-            jid,
+        await sock.sendMessage(jid,
             {
                 text: `🎓 You haven't completed your department and level selection yet.
 
@@ -45,15 +44,14 @@ to configure your department and level.`
     if (!schedule) {
         //typing state
         await sock.sendPresenceUpdate("composing", jid);
-        await sock.sendMessage(
-            jid,
+        await sock.sendMessage(jid,
             {
                 text: `⚠️ I couldn't find a timetable for:
 
 🎓 Department: ${departmentNames[department] || department}
 📚 Level: ${level}
 
-This timetable may not have been added yet.`
+This timetable has not been added by tobi yet.`
             },
             { quoted: message }
         );
@@ -66,8 +64,7 @@ This timetable may not have been added yet.`
     if (!todayClass || todayClass.length === 0) {
         //typing state
         await sock.sendPresenceUpdate("composing", jid);
-        await sock.sendMessage(
-            jid,
+        await sock.sendMessage(jid,
             {
                 text: `📚 There are no classes scheduled today!`
             },
@@ -85,14 +82,12 @@ This timetable may not have been added yet.`
 `*${c.course}*
 🕒 Time: ${c.time}
 🏢 Venue: ${c.venue}
-
 `;
     });
 
     //typing state
     await sock.sendPresenceUpdate("composing", jid);
-    await sock.sendMessage(
-        jid,
+    await sock.sendMessage(jid,
         {
             text: scheduleText.trim()
         },

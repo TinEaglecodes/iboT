@@ -48,7 +48,6 @@ export function startReminderService(sock) {
     }
 
     console.log("⏰ Reminder service started.");
-
     checkSchedule();
 
     reminderInterval = setInterval(() => {

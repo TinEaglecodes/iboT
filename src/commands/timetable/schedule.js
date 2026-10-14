@@ -21,6 +21,7 @@ export default async function timetableCommand(sock, jid, message) {
     const level = getLevel(jid);
 
     if (!department) {
+        //typing state
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(jid, {
             text: `🎓 You haven't selected a department yet.
@@ -45,7 +46,6 @@ Please use *.department* to configure your department and level.`
     }
 
     const schedule = getSchedule(department, level);
-
     if (!schedule) {
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(jid, {
@@ -54,7 +54,7 @@ Please use *.department* to configure your department and level.`
 🎓 Department: ${departmentNames[department] || department}
 📚 Level: ${level}
 
-The timetable may not have been added yet.`
+The timetable has not been added by tobi yet.`
         }, { quoted: message });
         return;
     }
@@ -76,7 +76,6 @@ The timetable may not have been added yet.`
         }
 
         hasClasses = true;
-
         for (const c of classes) {
             scheduleText +=
 `• *${c.course}*
@@ -93,9 +92,10 @@ The timetable may not have been added yet.`
     }
 
     await sock.sendPresenceUpdate("composing", jid);
-    await sock.sendMessage(
-        jid,
-        { text: scheduleText.trim() },
+    await sock.sendMessage(jid,
+        { 
+            text: scheduleText.trim() 
+        },
         { quoted: message }
     );
 }
