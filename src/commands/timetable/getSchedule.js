@@ -1,4 +1,4 @@
-import softwareEngineering200 from "./department timetable/softwareEngineering/200L.js";
+import softwareEngineering200  from "./department timetable/softwareEngineering/200L.js";
 import statistics200 from "./department timetable/statistics/200L.js";
 
 const schedules = {

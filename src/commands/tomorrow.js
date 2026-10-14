@@ -1,4 +1,4 @@
-import {getDepartment} from "./department/deptSettings.js";
+import { getDepartment, getLevel } from "./department/deptSettings.js";
 import getSchedule from "./timetable/getSchedule.js";
 
 const days = [
@@ -11,55 +11,60 @@ const days = [
     "saturday"
 ];
 
-export default async function tomorrowCommand(sock, jid, message) {
-    // Get this user's department
-    const department = getDepartment(jid);
+const departmentNames = {
+    softwareEngineering: "Software Engineering",
+    statistics: "Statistics",
+};
 
-    if (!department) {
-        //typing state
+export default async function tomorrowCommand(sock, jid, message) {
+    const department = getDepartment(jid);
+    const level = getLevel(jid);
+
+    if (!department || !level) {
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
             {
-                text: `🎓 You haven't selected a department yet.
+                text: `🎓 You haven't completed your department and level selection yet.
 
 Please use:
 
 *.department*
 
-to select your department.`
+to configure your department and level.`
             },
             { quoted: message }
         );
         return;
     }
 
-    // Get the timetable for this department
-    const schedule = getSchedule(department);
+    const schedule = getSchedule(department, level);
 
     if (!schedule) {
-        //typing state
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
             {
-                text: "⚠️ I couldn't find a timetable for your department."
+                text: `⚠️ I couldn't find a timetable for:
+
+🎓 Department: ${departmentNames[department] || department}
+📚 Level: ${level}
+
+This timetable may not have been added yet.`
             },
             { quoted: message }
         );
         return;
     }
 
-    // Get tomorrow's day, including the Saturday-to-Sunday transition
+    // Calculate tomorrow's day
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     const tomorrowName = days[tomorrow.getDay()];
     const tomorrowClasses = schedule[tomorrowName];
 
-    // No classes tomorrow
     if (!tomorrowClasses || tomorrowClasses.length === 0) {
-        //typing state
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
@@ -71,9 +76,9 @@ to select your department.`
         return;
     }
 
-    // Build tomorrow's schedule message
     let scheduleText =
-        `📅 *Classes Tomorrow (${tomorrowName.toUpperCase()}):*\n\n`;
+        `📅 *Classes Tomorrow (${tomorrowName.toUpperCase()})*\n` +
+        `🎓 ${departmentNames[department] || department} — ${level}\n\n`;
 
     tomorrowClasses.forEach(c => {
         scheduleText +=
@@ -83,7 +88,7 @@ to select your department.`
 
 `;
     });
-    //typing state
+
     await sock.sendPresenceUpdate("composing", jid);
     await sock.sendMessage(
         jid,

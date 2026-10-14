@@ -1,4 +1,5 @@
-import {getDepartment} from "./department/deptSettings.js";
+
+import { getDepartment, getLevel } from "./department/deptSettings.js";
 import getSchedule from "./timetable/getSchedule.js";
 
 const days = [
@@ -11,58 +12,60 @@ const days = [
     "saturday"
 ];
 
-export default async function todayCommand(sock, jid, message) {
-    // Get this user's department
-    const department = getDepartment(jid);
+const departmentNames = {
+    softwareEngineering: "Software Engineering",
+    statistics: "Statistics",
+};
 
-    // User hasn't selected a department
-    if (!department) {
+export default async function todayCommand(sock, jid, message) {
+    const department = getDepartment(jid);
+    const level = getLevel(jid);
+
+    if (!department || !level) {
         //typing state
-        await sock.sendPresenceUpdate('composing', jid)
+        await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
-            {text:
-`🎓 You haven't selected a department yet.
+            {
+                text: `🎓 You haven't completed your department and level selection yet.
 
 Please use:
 
 *.department*
 
-to select your department.`
+to configure your department and level.`
             },
             { quoted: message }
         );
         return;
     }
 
-    // Get the timetable for this department
-    const schedule = getSchedule(department);
+    const schedule = getSchedule(department, level);
 
-    // Safety check
     if (!schedule) {
-            //typing state
-        await sock.sendPresenceUpdate('composing', jid)
+        //typing state
+        await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
             {
-                text: "⚠️ I couldn't find a timetable for your department."
+                text: `⚠️ I couldn't find a timetable for:
+
+🎓 Department: ${departmentNames[department] || department}
+📚 Level: ${level}
+
+This timetable may not have been added yet.`
             },
             { quoted: message }
         );
-
         return;
     }
 
-    // Get today's day
     const todayName = days[new Date().getDay()];
-
-    // Get today's classes
     const todayClass = schedule[todayName];
 
-    // No classes today
     if (!todayClass || todayClass.length === 0) {
         //typing state
-        await sock.sendPresenceUpdate('composing', jid)
+        await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(
             jid,
             {
@@ -73,9 +76,9 @@ to select your department.`
         return;
     }
 
-    // Build schedule message
     let scheduleText =
-        `*Classes Today (${todayName.toUpperCase()}):*\n\n`;
+        `📚 *Classes Today (${todayName.toUpperCase()})*\n` +
+        `🎓 ${departmentNames[department] || department} — ${level}\n\n`;
 
     todayClass.forEach(c => {
         scheduleText +=
@@ -85,8 +88,9 @@ to select your department.`
 
 `;
     });
+
     //typing state
-    await sock.sendPresenceUpdate('composing', jid)
+    await sock.sendPresenceUpdate("composing", jid);
     await sock.sendMessage(
         jid,
         {
