@@ -25,13 +25,13 @@ export default async function tomorrowCommand(sock, jid, message) {
         await sock.sendMessage(
             jid,
             {
-                text: `🎓 You haven't completed your department and level selection yet.
+                text: `🎓 You haven't completed your department and Year selection yet.
 
 Please use:
 
 *.department*
 
-to configure your department and level.`
+to configure your department and Year.`
             },
             { quoted: message }
         );
@@ -48,7 +48,7 @@ to configure your department and level.`
                 text: `⚠️ I couldn't find a timetable for:
 
 🎓 Department: ${departmentNames[department] || department}
-📚 Level: ${level}
+📚 Year: ${level}
 
 This timetable may not have been added yet.`
             },

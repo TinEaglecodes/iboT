@@ -9,7 +9,7 @@ export default async function helpCommand(sock, jid, message) {
 🤖 *.info* - Learn more about me.
 📖 *.help* - Show this command menu.
 
-🎓 *.department* - Select your department and level.
+🎓 *.department* - Select your department and Year.
 📚 *.schedule* - View your full weekly timetable.
 🗓️ *.today* - View your classes for today.
 🗓️ *.tomorrow* - View your classes for tomorrow.

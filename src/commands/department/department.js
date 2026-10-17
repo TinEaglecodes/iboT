@@ -5,12 +5,12 @@ const departments = {
     "1": {
         name: "Software Engineering",
         value: "softwareEngineering",
-        levels: ["100L", "200L", "300L", "400L", "500L"]
+        levels: ["100", "200", "300", "400", "500"]
     },
     "2": {
         name: "Computer Science",
         value: "computerScience",
-        levels: ["100L", "200L", "300L", "400L", "500L"]
+        levels: ["100", "200", "300", "400", "500"]
     }
 };
 
@@ -24,7 +24,7 @@ export default async function departmentCommand(sock, jid, message, args) {
 Reply with the number:
 
 1️⃣ Software Engineering
-2️⃣ Computer Science
+2️⃣ Statistics
 
 Example:
 *.department 1*`
@@ -44,7 +44,7 @@ Example:
         return;
     }
 
-    // Department selected, but no level supplied
+    // Department selected, but no Year supplied
     if (!args[1]) {
         setDepartment(jid, selected.value);
         
@@ -55,7 +55,7 @@ Example:
 
 🎓 Department: *${selected.name}*
 
-Now select your level:
+Now select your Year:
 
 ${selected.levels.map((level, index) => `${index + 1}️⃣ ${level}`).join("\n")}
 
@@ -64,7 +64,7 @@ Example:
 
 This example selects ${selected.levels[1]}.
 
-Your timetable will use both your department and level.`
+Your timetable will use both your department and Year.`
         }, { quoted: message });
         return;
     }
@@ -77,7 +77,7 @@ Your timetable will use both your department and level.`
         //typing state
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(jid, {
-            text: `❌ Invalid level.
+            text: `❌ Invalid Year.
 
 Choose a number from 1 to ${selected.levels.length}.`
         }, { quoted: message });
@@ -90,10 +90,10 @@ Choose a number from 1 to ${selected.levels.length}.`
     //typing state
     await sock.sendPresenceUpdate("composing", jid);
     await sock.sendMessage(jid, {
-        text: `✅ *Department and level saved!*
+        text: `✅ *Department and Year saved!*
 
 🎓 Department: *${selected.name}*
-📚 Level: *${selectedLevel}*
+📚 Year: *${selectedLevel}*
 
 Your timetable and class reminders will use these settings.`
     }, { quoted: message });

@@ -30,7 +30,7 @@ Please use:
 
 *.department*
 
-to select your department and level.`
+to select your department and Year.`
         }, { quoted: message });
         return;
     }
@@ -38,9 +38,9 @@ to select your department and level.`
     if (!level) {
         await sock.sendPresenceUpdate("composing", jid);
         await sock.sendMessage(jid, {
-            text: `📚 You haven't selected your level yet.
+            text: `📚 You haven't selected your Year yet.
 
-Please use *.department* to configure your department and level.`
+Please use *.department* to configure your department and Year.`
         }, { quoted: message });
         return;
     }
@@ -52,7 +52,7 @@ Please use *.department* to configure your department and level.`
             text: `⚠️ I couldn't find a timetable for:
 
 🎓 Department: ${departmentNames[department] || department}
-📚 Level: ${level}
+📚 Year: ${level}
 
 The timetable has not been added by tobi yet.`
         }, { quoted: message });
@@ -61,7 +61,7 @@ The timetable has not been added by tobi yet.`
 
     let scheduleText = `📚 *FULL WEEKLY TIMETABLE*\n`;
     scheduleText += `🎓 Department: ${departmentNames[department] || department}\n`;
-    scheduleText += `📚 Level: ${level}\n\n`;
+    scheduleText += `📚 Year: ${level}\n\n`;
 
     let hasClasses = false;
 

@@ -75,13 +75,13 @@ function checkSchedule() {
             continue;
         }
 
-        // Get this user's department AND level
+        // Get this user's department AND Year
         const department = getDepartment(jid);
         const level = getLevel(jid);
 
         if (!department || !level) {
             console.log(
-                `⚠️ Department or level not selected for ${jid}`
+                `⚠️ Department or Year not selected for ${jid}`
             );
             continue;
         }
