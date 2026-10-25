@@ -88,7 +88,7 @@ Before we start, I need to know your department.
 🎓What department are you in:
 
 1️⃣ Software Engineering
-2️⃣ Computer Science
+2️⃣ Statistics
 
 Reply with: *.department <number>
 

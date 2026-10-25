@@ -8,8 +8,8 @@ const departments = {
         levels: ["100", "200", "300", "400", "500"]
     },
     "2": {
-        name: "Computer Science",
-        value: "computerScience",
+        name: "Statistics",
+        value: "statistics",
         levels: ["100", "200", "300", "400", "500"]
     }
 };
@@ -24,7 +24,7 @@ export default async function departmentCommand(sock, jid, message, args) {
 Reply with the number:
 
 1️⃣ Software Engineering
-2️⃣ Computer Science
+2️⃣ Statistics
 
 Example:
 *.department 1*`
