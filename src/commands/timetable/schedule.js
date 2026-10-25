@@ -54,7 +54,7 @@ Please use *.department* to configure your department and Year.`
 🎓 Department: ${departmentNames[department] || department}
 📚 Year: ${level}
 
-The timetable has not been added by tobi yet.`
+The timetable has not been added by yet.`
         }, { quoted: message });
         return;
     }

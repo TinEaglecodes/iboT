@@ -111,9 +111,10 @@ Send:
 to see all the available commands.
 
 # NOTE
-
+> **The bot doesn't store files it only tracks the files sent to it then recalls when needed**
 > **The Bot is still under development and some of the features, so you may encounter some bugs.**
-
+> **deptSettings.json stores information about your department and year clearing it means the bot does not remember user department and year.**
+> **documents.json stores the jid for the document sent to it so it may be recalled, clearing it means clearing the reference to the document on the bot**
 ---
 
-> **Don't forget to leave a star and follow me as this helps me alot thank you**
+> **Please leave a star and follow me as this helps me alot thank you**
