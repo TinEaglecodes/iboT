@@ -1,4 +1,3 @@
-
 import { getDepartment, getLevel } from "./department/deptSettings.js";
 import getSchedule from "./timetable/getSchedule.js";
 
@@ -51,7 +50,7 @@ to configure your department and Year.`
 🎓 Department: ${departmentNames[department] || department}
 📚 Year: ${level}
 
-This timetable has not been added by tobi yet.`
+This timetable has not been added yet.`
             },
             { quoted: message }
         );

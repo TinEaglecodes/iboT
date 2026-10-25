@@ -24,7 +24,7 @@ export default async function departmentCommand(sock, jid, message, args) {
 Reply with the number:
 
 1️⃣ Software Engineering
-2️⃣ Statistics
+2️⃣ Computer Science
 
 Example:
 *.department 1*`

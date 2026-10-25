@@ -14,8 +14,6 @@ I’m your school assistant. I can:
 🎓 Use *.department* to select your department and Year.
 
 Just type *.help* to see everything I can do!
-
-I’m still under development — Tobi is still teaching me new tricks 🛠️, so you might encounter a weird sh*t. But I’m getting smarter with every update (I think) 😌.
 `},
       {quoted: message}
     );
